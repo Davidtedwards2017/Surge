@@ -4,14 +4,22 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	//public members
-	
+	public float TurningRate;
+	public float ThrustAmt;
+	public Vector3 direction;
+	public float TurningSpeed;
 	
 	//private members
-	private bool bCanControl;
+	private bool bCanControl = true;
+	private InputController m_InputCtrl;
+	private SurgeActor m_Actor;		
 	
 	// Use this for initialization
 	void Start () {
 		NotificationCenter.DefaultCenter.AddObserver(this, "OnGameStateChanged");
+		
+		m_Actor = GetComponent<SurgeActor>();
+		m_InputCtrl = new InputController();
 		
 		
 	}
@@ -21,14 +29,37 @@ public class PlayerController : MonoBehaviour {
 		
 		if(!bCanControl)
 			return;
-		
+
 		GetPlayerInput();
+		gameObject.transform.rotation = Quaternion.Lerp(
+			gameObject.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * TurningSpeed);
 	}
 	
 	void GetPlayerInput()
 	{
+		direction = m_InputCtrl.GetAimDirection();
+		direction.y = transform.position.y;
+
+		//gameObject.transform.rotation = Quaternion.LookRotation(direction);
+				
+		if(m_InputCtrl.GetPress())
+			m_Actor.AddForce(transform.forward * ThrustAmt);
+
 	}
 	
+			
+	private IEnumerator RotatePlayer(Vector3 degrees, float rate)
+	{
+		var startRotation = transform.rotation;
+		var endRotation = startRotation * Quaternion.Euler(degrees);
+		float t = 0.0f;
+		while (t < 1.0f)
+		{
+			t += Time.deltaTime * rate;
+			gameObject.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
 	
 	public void OnGameStateChanged( object obj )
 	{

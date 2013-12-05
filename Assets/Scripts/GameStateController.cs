@@ -28,8 +28,10 @@ public class GameStateController : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+		NotificationCenter.DefaultCenter.AddObserver(this, "OnGameStateChanged");
 		CurrentGameState = GameState.UNINITLAIZED;
 		
+		CurrentGameState = GameState.PLAYING;
 		
 	}
 	

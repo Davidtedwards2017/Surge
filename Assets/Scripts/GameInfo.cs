@@ -15,6 +15,7 @@ public class GameInfo : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		InitiateForCurrentDevice();
+		
 	}
 	
 	// Update is called once per frame
