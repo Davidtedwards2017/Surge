@@ -1,17 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\InputController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Actors\SurgeActor.cs">
     <Files>
-      <File FileName="Assets\Scripts\SurgeActor.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Gun.cs" Line="18" Column="44" />
-      <File FileName="Assets\Scripts\SurgeProjectile.cs" Line="29" Column="3" />
-      <File FileName="Assets\Scripts\InputController.cs" Line="44" Column="6" />
+      <File FileName="Assets\Scripts\Actors\Wall.cs" Line="1" Column="19" />
+      <File FileName="Assets\Scripts\Actors\SurgeActor.cs" Line="50" Column="5" />
+      <File FileName="Assets\Scripts\Controllers\MusicController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actors\Gun.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Core\NotificationCenter.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actors\Asteroid.cs" Line="31" Column="3" />
+      <File FileName="Assets\Scripts\Actors\Asteroid_Chunk.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controllers\SpawnController.cs" Line="45" Column="2" />
+      <File FileName="Assets\Scripts\Controllers\PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controllers\CameraController.cs" Line="18" Column="1" />
+      <File FileName="Assets\Scripts\Actors\Wall.cs" Line="1" Column="19" />
+      <File FileName="Assets\Scripts\Core\Stage.cs" Line="90" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="G:\Documents\Projects\Surge\Assets\Scripts\InputController.cs" line="36" />
+      <Breakpoint file="G:\Documents\Projects\Surge\Assets\Scripts\Core\Stage.cs" line="90" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
