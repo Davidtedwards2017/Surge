@@ -30,8 +30,6 @@ public class NotificationCenter : MonoBehaviour
 		}
     }
  
- 
- 
     // Our hashtable containing all the notifications.  Each notification in the hash table is an ArrayList that contains all the observers for that notification.
 	Hashtable notifications = new Hashtable();
  
@@ -94,6 +92,7 @@ public class NotificationCenter : MonoBehaviour
 			if (!observer) { observersToRemove.Add(observer); }
 			else {
 				// If the observer is valid, then send it the notification. The message that's sent is the name of the notification.
+                Debug.Log("[NotificationCenter] sending message "+ aNotification.name+" to " + observer);
 				observer.SendMessage(aNotification.name, aNotification, SendMessageOptions.DontRequireReceiver);
 			}
 	}

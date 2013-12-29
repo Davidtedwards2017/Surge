@@ -1,93 +1,126 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Actors;
+using Surge.Core;
 
-public class CameraController : MonoBehaviour {
-	
-	//public members
-	public GameObject Player;
+namespace Surge.Controllers
+{
 
-	public float VelocityOffsetScale;
-	public float MaxOffset;
-	public float EdgeDistance; 
-	public float MaxCameraDistance;
-	
-	//private members
-	private float m_BaseCameraDistance;
-	private PlayerController m_Player;
-	private float m_CurrentCameraDistance;
+	public class CameraController : MonoBehaviour {
+		
+		//public members
+		public float VelocityOffsetScale;
+		public float MaxOffset;
+		public float EdgeDistance; 
+		public float MaxCameraDistance;
+        public float CurrentCameraYOffset;
+        public GameObject Focus;
+        public Rigidbody FocusRigidbody
+        {
+            get
+            {
+                if(m_FocusRigidbody == null)
+                    m_FocusRigidbody = Focus.GetComponent<Rigidbody>();
+                
+                return m_FocusRigidbody;
+            }
+        }
 
-	// Use this for initialization
-	void Start () {
-		//TODO: subscribe to player death and spawn messages messages
-		NotificationCenter.DefaultCenter.AddObserver(this, "onPlayerSpawn");
 		
-		findPlayerToAttachTo();
-		
-		m_BaseCameraDistance = Vector3.Distance(Player.transform.position, transform.position);
-	}
-	
-
-	
-	// Update is called once per frame
-	void Update () {
-		camera.transform.position = GetCameraFocus();
-	}
-	
-	bool findPlayerToAttachTo()
-	{
-		if(Player == null)
-			Player = GameObject.Find("Player");
-		
-		m_Player = Player.GetComponent<PlayerController>();
-		return (m_Player != null) ? true : false;
-	}
-	
-	void ResetPosition()
-	{
-	}
-		
-	void onPlayerSpawn()
-	{
-		if(findPlayerToAttachTo())
-			Debug.Log("camera attached found player");
-	}
-	
-	Vector3 GetCameraFocus()
-	{
-		Vector3 center;
-		
-		center = Player.transform.position + GetVelocityOffset();
-		center.y = m_BaseCameraDistance;
-
-		if((center.z + EdgeDistance) >= Stage.North.transform.position.z)
-		{
-			center.z = Stage.North.transform.position.z - EdgeDistance;
+		//private members
+		private float m_BaseCameraDistance;
+        //private PlayerController PlayerCtrl;
+		private float m_CurrentCameraDistance;
+		private bool m_bFollowPlayer;
+        private Rigidbody m_FocusRigidbody;
+ 		// Use this for initialization
+		void Start () {
+			//TODO: subscribe to player death and spawn messages messages
+           
+            GameInfo.PlayerCtrl.PlayerSpawnedEvent += onPlayerSpawned;
+            GameInfo.PlayerCtrl.PlayerDeathEvent += onPlayerDeath;
+			//if(findPlayerToAttachTo()) m_bFollowPlayer = true;
 		}
-		else if((center.z - EdgeDistance) <= Stage.South.transform.position.z)
-		{
-			center.z = Stage.South.transform.position.z + EdgeDistance;
+       
+		// Update is called once per frame
+		void Update () {
+
+			if (m_bFollowPlayer)
+				camera.transform.position = GetCameraFocus();
 		}
 		
-		if((center.x + EdgeDistance) >= Stage.East.transform.position.x)
+		bool findPlayerToAttachTo()
 		{
-			center.x = Stage.East.transform.position.x - EdgeDistance;
+            Focus = GameInfo.PlayerCtrl.PlayerGameObject;
+
+            if (Focus == null)
+				return false;
+
+            //CurrentCameraYOffset = Vector3.Distance(Focus.transform.position, transform.position);
+			return true;
 		}
-		else if((center.x - EdgeDistance) <= Stage.West.transform.position.x)
+		
+		void ResetPosition()
 		{
-			center.x = Stage.West.transform.position.x + EdgeDistance;
 		}
-		
-		return center;	
-	}
-	
-	Vector3 GetVelocityOffset()
-	{
-		Vector3 VelocityOffset = VelocityOffsetScale * m_Player.rigidbody.velocity;
-		
-		if(VelocityOffset.magnitude > MaxOffset)
-			VelocityOffset = VelocityOffset.normalized * MaxOffset;
-		
-		return VelocityOffset;
-	}
 			
+
+
+		void onPlayerDeath()
+		{
+			m_bFollowPlayer = false;
+		}
+		
+		Vector3 GetCameraFocus()
+		{
+			Vector3 center;
+
+			center = Focus.transform.position + GetVelocityOffset();
+            center.y = CurrentCameraYOffset;
+
+			if((center.z + EdgeDistance) >= Stage.North.transform.position.z)
+			{
+				center.z = Stage.North.transform.position.z - EdgeDistance;
+			}
+			else if((center.z - EdgeDistance) <= Stage.South.transform.position.z)
+			{
+				center.z = Stage.South.transform.position.z + EdgeDistance;
+			}
+			
+			if((center.x + EdgeDistance) >= Stage.East.transform.position.x)
+			{
+				center.x = Stage.East.transform.position.x - EdgeDistance;
+			}
+			else if((center.x - EdgeDistance) <= Stage.West.transform.position.x)
+			{
+				center.x = Stage.West.transform.position.x + EdgeDistance;
+			}
+			
+			return center;	
+		}
+		
+		Vector3 GetVelocityOffset()
+		{
+			Vector3 VelocityOffset = VelocityOffsetScale * FocusRigidbody.velocity;
+			
+			if(VelocityOffset.magnitude > MaxOffset)
+				VelocityOffset = VelocityOffset.normalized * MaxOffset;
+			
+			return VelocityOffset;
+		}
+
+        #region Events and Notifications
+
+        void onPlayerSpawned()
+        {
+            Debug.Log("[CameraController] player spawned");
+            if(findPlayerToAttachTo())
+            {
+                m_bFollowPlayer = true;
+                Debug.Log("camera attached found player");
+            }
+        }
+		
+        #endregion		
+	}
 }

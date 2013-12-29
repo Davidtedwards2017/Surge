@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour {
 	public float FireCooldownTime = 0.15f;
 
 	//private members
+	private bool m_bActive;
 	private Transform GunSocket;
 	private float m_FireCooldown;
 	
@@ -16,6 +17,9 @@ public class Gun : MonoBehaviour {
 		GunSocket = transform.FindChild("GunSocket");
 
 		NotificationCenter.DefaultCenter.AddObserver(this, "onBeatDetected");
+		NotificationCenter.DefaultCenter.AddObserver (this, "onPlayerDying");
+
+		onGameStart ();
 	}
 	
 	// Update is called once per frame
@@ -24,10 +28,18 @@ public class Gun : MonoBehaviour {
 			m_FireCooldown -= Time.deltaTime;
 	}
 	
-
+	private void onGameStart()
+	{
+		m_bActive = true;
+	}
 	private void onBeatDetected(Notification notification)
 	{
-		Shoot();
+		if(m_bActive)
+			Shoot();
+	}
+	private void onPlayerDying()
+	{
+		m_bActive = false;
 	}
 
 	public void Shoot()

@@ -6,29 +6,15 @@ public class SurgeActor : MonoBehaviour {
 	//public members
 	public float MaxSpeed;
 	public float Health;
-	public float Mass;
-	public float Drag;
 	public Vector3 velocity;
-	/*
-	public Rigidbody RB
-	{
-		get
-		{
-			if( m_Rigidbody == null)
-				m_Rigidbody = gameObject.GetComponent<Rigidbody>();
+    public Rigidbody RB;
 
-			return m_Rigidbody;
-		}
-	}
-	*/
 	//private members
 	protected float m_Speed;
-	protected Rigidbody m_Rigidbody;
-
-
+	
 	// Use this for initialization
 	void Start () {
-
+        RB = GetComponent<Rigidbody>() as Rigidbody;
 		this.Initalize();
 	}
 
@@ -37,24 +23,13 @@ public class SurgeActor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.position += velocity * Time.deltaTime;
-		/*
-		if(transform.position.y != 0)
-		{
-			Debug.Log("[SurgeActor]" + this.name + " is has invalid Y:" + transform.position.y);
-			Vector3 vec;
-			vec.x = transform.position.x;
-			vec.z = transform.position.z;
-			vec.y = 0;
-			transform.position = vec;
-		}
-		*/
 	}
 
 	protected virtual void Initalize()
 	{
 	}
 	
-	protected void OnTriggerEnter(Collider collider)
+	protected virtual void OnTriggerEnter(Collider collider)
 	{
 		if(collider.gameObject.tag.Equals("Projectile"))
 		{
@@ -68,7 +43,7 @@ public class SurgeActor : MonoBehaviour {
 		} 
 	}
 
-	protected void OnCollisionEnter(Collision collision)
+	protected virtual void OnCollisionEnter(Collision collision)
 	{
 		//hit another Enemy or Wall
 		if(collision.gameObject.tag.Equals("Enemy") || collision.gameObject.tag.Equals("Wall"))
@@ -88,5 +63,9 @@ public class SurgeActor : MonoBehaviour {
 	protected virtual void Explode()
 	{
 	}
+
+
+
+
 	
 }

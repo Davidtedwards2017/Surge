@@ -22,7 +22,7 @@ public class Asteroid : SurgeActor {
 	
 	protected override void Explode()
 	{
-		NotificationCenter.DefaultCenter.PostNotification(this, "onEnemyDestroyed");
+		//NotificationCenter.DefaultCenter.PostNotification(this, "onEnemyDestroyed");
 		rigidbody.detectCollisions = false;
 		SpawnChunks();
 		Destroy(gameObject);

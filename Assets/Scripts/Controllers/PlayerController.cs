@@ -1,94 +1,124 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Core;
+using Surge.Actors;
 
-public class PlayerController : MonoBehaviour {
+namespace Surge.Controllers
+{
 
-	//public members
-	public float TurningRate;
-	public float ThrustAmt;
-	public Vector3 direction;
+	public class PlayerController : MonoBehaviour {
 
-	//private members
-	private bool bCanControl = true;
-	private InputController m_InputCtrl;
-	//private SurgeActor m_Actor;		
-	private Rigidbody m_Rigidbody;
-	
-	// Use this for initialization
-	void Start () {
-		NotificationCenter.DefaultCenter.AddObserver(this, "OnGameStateChanged");
-		
-		//m_Actor = GetComponent<SurgeActor>();
-		m_InputCtrl = new InputController();
+        //private members
+        private bool bCanControl;
+        private object m_Locker = new object();
 
-		m_Rigidbody = GetComponent<Rigidbody>();
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-		if(!bCanControl)
-			return;
 
-		GetPlayerInput();
-		gameObject.transform.rotation = Quaternion.Lerp(
-			gameObject.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * TurningRate);
-	}
-	
-	void GetPlayerInput()
-	{
-		direction = m_InputCtrl.GetAimDirection();
-		direction.y = transform.position.y;
 
-		//gameObject.transform.rotation = Quaternion.LookRotation(direction);
-				
-		if(m_InputCtrl.GetPress())
-			m_Rigidbody.AddForce(transform.forward * ThrustAmt);
+		//public members
+        public GameObject PlayerPrefab;
+        public GameObject PlayerGameObject;
+        public PlayerPawn PlayerPawn;
 
-	}
-	
-			
-	private IEnumerator RotatePlayer(Vector3 degrees, float rate)
-	{
-		var startRotation = transform.rotation;
-		var endRotation = startRotation * Quaternion.Euler(degrees);
-		float t = 0.0f;
-		while (t < 1.0f)
-		{
-			t += Time.deltaTime * rate;
-			gameObject.transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
-			yield return new WaitForSeconds(0.1f);
+        public Vector3 PawnLocation
+        {
+            get
+            {
+                if(PlayerGameObject)
+                    return PlayerGameObject.transform.position;
+
+                return new Vector3(0,0,0);
+            }
+        }
+
+        #region Events declarations
+
+        public delegate void PlayerDyingEventHandler();
+        public delegate void PlayerDeathEventHandler();
+        public delegate void PlayerSpawnedEventHander();
+
+        public event PlayerDyingEventHandler PlayerDyingEvent;
+        public event PlayerDeathEventHandler PlayerDeathEvent;
+        public event PlayerSpawnedEventHander PlayerSpawnedEvent;
+
+        void onPlayerDying() { if (PlayerDyingEvent != null) PlayerDyingEvent(); }
+        void onPlayerDeath() { if (PlayerDeathEvent != null) PlayerDeathEvent(); }
+        void onPlayerSpawned() { if (PlayerSpawnedEvent != null) PlayerSpawnedEvent(); }
+
+        #endregion
+
+		void Start () 
+        {
+            GameInfo.GameStateCtrl.GameStateChanged += onGameStateChanged;
+            bCanControl = false;
+
+            //GameInfo.CameraCtrl.SubscribeToEvents();
 		}
-	}
-	
-	public void OnGameStateChanged( object obj )
-	{
-		Notification notification = obj as Notification;
-
-		GameStateController.GameState NewState = (GameStateController.GameState) notification.data["NewGameState"];
-		GameStateController.GameState OldState = (GameStateController.GameState) notification.data["PrevGameState"];
 		
-		Debug.Log(string.Format("[(0)] GameStateChanged from (1) to (2).",
-			this.GetType(), OldState.ToString(), NewState.ToString()));
-		
-		bCanControl = ( NewState == GameStateController.GameState.PLAYING) ? true : false;
-	}
+		void Update () {
 
-
-	protected void OnCollisionEnter(Collision collision)
-	{
-		//hit by enemy
-		if(collision.gameObject.tag.Equals("Enemy"))
-		{
-			Death();
+            if(!bCanControl)
+                return;
+            
+            GetPlayerInput();
 		}
-	}
+		
+        void GetPlayerInput()
+        {
+            Vector3 Direction = GameInfo.InputCtrl.GetAimDirection();
+            Direction.y = PlayerPawn.transform.position.y;
 
-	private void Death()
-	{
-		NotificationCenter.DefaultCenter.PostNotification(this, "OnPlayerDeath");
-		bCanControl = false;
-		m_Rigidbody.detectCollisions = false;
+            PlayerPawn.RotatePawn(Direction);
+
+            if (GameInfo.InputCtrl.GetPress())
+                PlayerPawn.ActivateThrusters();
+        }
+		
+        public void SpawnPlayerPawn()
+        {
+            Vector3 SpawnLocation;
+            PlayerGameObject = GameObject.FindGameObjectWithTag("Player");
+            
+            if( PlayerGameObject == null)
+            {
+                SpawnLocation = new Vector3(0,0,0);
+                PlayerGameObject = Instantiate(PlayerPrefab, SpawnLocation, Quaternion.identity) as GameObject;
+            }
+
+            PlayerPawn = PlayerGameObject.GetComponent<PlayerPawn>() as PlayerPawn;
+            PlayerPawn.PlayerCtrl = this;
+            onPlayerSpawned();
+        }
+
+
+        public void PawnDying()
+        {
+            onPlayerDying();
+            bCanControl = false;
+        }
+
+        public void PawnDeath()
+        {
+            onPlayerDeath();
+            Destroy(PlayerGameObject);
+            PlayerPawn = null;
+            PlayerGameObject = null;
+
+        }
+
+        #region Notifications and Event listeners
+
+        void onGameStateChanged(GameState newState, GameState oldState)
+        {
+            Debug.Log("[PlayerController] GameStateChanged from "+ oldState+" to "+newState);
+            
+            if (newState == GameState.PLAYING)
+            {
+                SpawnPlayerPawn();
+                bCanControl = true;
+            }
+        }
+
+        #endregion
+
 	}
 }
