@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Core;
 
 namespace Surge.Controllers
 {
@@ -13,6 +14,8 @@ namespace Surge.Controllers
 		//public members
 		public Transform AsteroidPrefab;
 		public float TimeBetweenSpawns;
+        public float MinSpawnDistance;
+        public int NumberOfSpawnPlacementAttempts;
 
 		//private members
 		private float m_timeTillNextSpawn;
@@ -22,8 +25,9 @@ namespace Surge.Controllers
 		void Start () {
 			SpawnQueue = new ArrayList();
 
-			NotificationCenter.DefaultCenter.AddObserver(this, "onBeatDetected");
-			InvokeRepeating("AddAsteroidToQueue", 4, TimeBetweenSpawns);
+            GameInfo.MusicCtrl.BeatDetectedEvent += onBeatDetected;
+            GameInfo.GameStateCtrl.GameStartEvent += onGameStart;
+            GameInfo.GameStateCtrl.GameEndEvent += onGameEnd;
 		}
 
 		// Update is called once per frame
@@ -32,7 +36,7 @@ namespace Surge.Controllers
 				m_timeTillNextSpawn -= Time.deltaTime;
 		}
 
-		private void onBeatDetected()
+		private void onBeatDetected(int subband)
 		{
 			if(m_timeTillNextSpawn > 0)
 				return;
@@ -56,7 +60,12 @@ namespace Surge.Controllers
 			if(SpawnQueue.Count == 0)
 				return false;
 
-			Spawn((Transform)SpawnQueue[0],Stage.GetRandomLocationInStage());
+            Vector3 spawnLoc;
+
+            if( GetValidSpawnLocation(out spawnLoc))
+                Spawn((Transform)SpawnQueue[0],spawnLoc);
+            else
+                Debug.Log("[SpawnController] Failed to spawn enemy, no valid spawn locations found within " +NumberOfSpawnPlacementAttempts+ " attempts");
 
 			SpawnQueue.RemoveAt(0);
 			return true;
@@ -79,5 +88,62 @@ namespace Surge.Controllers
 
 		}
 
+        private bool GetValidSpawnLocation(out Vector3 SpawnLocation)
+        {
+            int attempts = 0;
+            bool bValid = false;
+            SpawnLocation = new Vector3(0,0,0);
+
+            while (!bValid)
+            {
+                //dont return anything if we take to long to find valid location
+                if( attempts++ > NumberOfSpawnPlacementAttempts)
+                    return false;
+
+                SpawnLocation = Stage.GetRandomLocationInStage();
+                bValid = true;
+
+                foreach( GameObject GO in GameObject.FindGameObjectsWithTag("Enemy") )
+                {
+                    if ( (SpawnLocation - GO.transform.position).magnitude < MinSpawnDistance )
+                        bValid = false;
+                    
+                }
+            }
+
+            return true;
+        }
+
+        public void ClearEnemies()
+        {
+            foreach( GameObject GO in GameObject.FindGameObjectsWithTag("Enemy"))
+                Destroy(GO);
+
+            SpawnQueue.Clear();
+        }
+
+        public void StartSpawning()
+        {
+            InvokeRepeating("AddAsteroidToQueue", 4, TimeBetweenSpawns);
+        }
+        public void StopSpawning()
+        {
+            CancelInvoke("AddAsteroidToQueue");
+        }
+
+        #region Notifications and Event listeners
+
+        void onGameStart()
+        {
+            StartSpawning();
+        }
+
+        void onGameEnd()
+        {
+            StopSpawning();
+            ClearEnemies();
+        }
+
+        #endregion
 	}
 }

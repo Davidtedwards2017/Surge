@@ -66,10 +66,7 @@ namespace Surge.Controllers
 			
 
 
-		void onPlayerDeath()
-		{
-			m_bFollowPlayer = false;
-		}
+
 		
 		Vector3 GetCameraFocus()
 		{
@@ -119,6 +116,11 @@ namespace Surge.Controllers
                 m_bFollowPlayer = true;
                 Debug.Log("camera attached found player");
             }
+        }
+
+        void onPlayerDeath()
+        {
+            m_bFollowPlayer = false;
         }
 		
         #endregion		

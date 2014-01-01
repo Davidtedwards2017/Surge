@@ -53,7 +53,7 @@ namespace Surge.Controllers
 		
 		private Vector3 GetMouseAimDirection()
 		{
-			if (GameInfo.PlayerCtrl == null)
+			if (GameInfo.PlayerCtrl.PlayerPawn == null)
                 return new Vector3(0, 0, 0);
 
             Vector3 playerLocation = GameInfo.PlayerCtrl.PlayerPawn.transform.position;

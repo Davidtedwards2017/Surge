@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Core;
 
 public class Gun : MonoBehaviour {
 
@@ -16,8 +17,8 @@ public class Gun : MonoBehaviour {
 	void Start () {
 		GunSocket = transform.FindChild("GunSocket");
 
-		NotificationCenter.DefaultCenter.AddObserver(this, "onBeatDetected");
-		NotificationCenter.DefaultCenter.AddObserver (this, "onPlayerDying");
+        GameInfo.PlayerCtrl.PlayerDyingEvent += onPlayerDying;
+        GameInfo.MusicCtrl.BeatDetectedEvent += onBeatDetected;
 
 		onGameStart ();
 	}
@@ -32,7 +33,7 @@ public class Gun : MonoBehaviour {
 	{
 		m_bActive = true;
 	}
-	private void onBeatDetected(Notification notification)
+	private void onBeatDetected(int subband)
 	{
 		if(m_bActive)
 			Shoot();

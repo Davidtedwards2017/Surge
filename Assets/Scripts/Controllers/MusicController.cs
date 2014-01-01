@@ -6,6 +6,9 @@ namespace Surge.Controllers
 
 	public class MusicController : MonoBehaviour {
 
+        public delegate void BeatDetectedEventHandler(int subband);
+        public event BeatDetectedEventHandler BeatDetectedEvent;
+
 		//public members
 		public int SubbandSize = 32;
 		public int SampleSize = 1024;
@@ -18,6 +21,13 @@ namespace Surge.Controllers
 		private float[,] subbandHistory;
 		private float[] frequencyData;
 
+
+        void onBeatDetected(int subband)
+        {
+            if (BeatDetectedEvent != null)
+                BeatDetectedEvent(subband);
+        }
+
 		// Use this for initialization
 		void Start () {
 			InitalizeFrequencyData();
@@ -26,14 +36,6 @@ namespace Surge.Controllers
 		// Update is called once per frame
 		void Update () {
 			CheckSubband();
-		}
-
-		public void BeatDetected(int subband)
-		{
-			Hashtable HT = new Hashtable(2);
-			HT.Add("subband", subband);
-			 
-			//NotificationCenter.DefaultCenter.PostNotification(this, "onBeatDetected", HT);
 		}
 
 		private void InitalizeFrequencyData()
@@ -75,7 +77,7 @@ namespace Surge.Controllers
 					if(CheckForBeat(k, subbands[k]))
 					{
 						//Debug.Log("Beat on subband " + k);	
-						BeatDetected(k);
+                        onBeatDetected(k);
 					}
 					
 					subbands[k] = 0;

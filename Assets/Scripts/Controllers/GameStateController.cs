@@ -12,8 +12,16 @@ namespace Surge.Controllers
 		private GameState m_CurrentGameState;
 		
         //public members
+        #region Events declarations
         public delegate void GameStateChangedEventHandler(GameState NewState, GameState OldState);
+        public delegate void GameStartEventHandler();
+        public delegate void GameEndEventHandler();
+
         public event GameStateChangedEventHandler GameStateChanged;
+        public event GameStartEventHandler GameStartEvent;
+        public event GameStartEventHandler GameEndEvent;
+
+        #endregion
 
 		public GameState CurrentGameState
 		{
@@ -39,6 +47,17 @@ namespace Surge.Controllers
                 GameStateChanged(NewState, OldState);
         }
 
+        void onGameStart()
+        {
+            if(GameStartEvent != null)
+                GameStartEvent();
+        }
+        void onGameEnd()
+        {
+            if(GameEndEvent != null)
+                GameEndEvent();
+        }
+
 		// Use this for initialization
 		void Start () {
             GameInfo.PlayerCtrl.PlayerDeathEvent += onPlayerDeath;
@@ -48,6 +67,12 @@ namespace Surge.Controllers
         public void StartGame()
         {
             CurrentGameState = GameState.PLAYING;
+            onGameStart();
+        }
+        public void EndGame()
+        {
+            CurrentGameState = GameState.ENDSCREEN;
+            onGameEnd();
         }
         
         public void OpenStartMenu()
@@ -68,7 +93,7 @@ namespace Surge.Controllers
         void onPlayerDeath()
         {
             Debug.Log ("[GameInfo] Player death detected");
-            CurrentGameState = GameState.ENDSCREEN;
+            EndGame();
         }
         
         #endregion

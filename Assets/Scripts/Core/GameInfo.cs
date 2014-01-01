@@ -13,6 +13,7 @@ namespace Surge.Core
         private static InputController m_InputCtrl;
         private static PlayerController m_PlayerCtrl;
         private static CameraController m_CameraCtrl;
+        private static MusicController m_MusicCtrl;
         private static GameObject m_PlayerGameObject;
 
 		//public members
@@ -55,6 +56,16 @@ namespace Surge.Core
                     m_CameraCtrl = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
 
                 return m_CameraCtrl;  
+            }
+        }
+        public static MusicController MusicCtrl
+        {
+            get
+            {
+                if(m_MusicCtrl == null)
+                    m_MusicCtrl = GameObject.FindGameObjectWithTag("Controllers").GetComponent<MusicController>();
+                
+                return m_MusicCtrl;  
             }
         }
 
