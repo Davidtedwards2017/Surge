@@ -11,6 +11,7 @@ namespace Surge.Actors
 
     	protected override void Explode()
     	{
+            AwardPoints();
     		NotificationCenter.DefaultCenter.PostNotification(this, "onEnemyDestroyed");
     		rigidbody.detectCollisions = false;
     		Destroy(gameObject);

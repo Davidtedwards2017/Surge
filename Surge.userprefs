@@ -1,22 +1,26 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Controllers\ScoreController.cs">
     <Files>
-      <File FileName="Assets\Scripts\Actors\PlayerPawn.cs" Line="10" Column="5" />
-      <File FileName="Assets\Scripts\Actors\Asteroid.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controllers\UIController.cs" Line="145" Column="4" />
+      <File FileName="Assets\Scripts\Actors\PlayerPawn.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Actors\Asteroid.cs" Line="28" Column="1" />
       <File FileName="Assets\Scripts\Actors\SurgeActor.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Actors\Enemy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Actors\Asteroid_Chunk.cs" Line="20" Column="2" />
-      <File FileName="Assets\Scripts\Controllers\ScoreController.cs" Line="8" Column="31" />
+      <File FileName="Assets\Scripts\Actors\Enemy.cs" Line="16" Column="2" />
+      <File FileName="Assets\Scripts\Actors\Asteroid_Chunk.cs" Line="14" Column="27" />
+      <File FileName="Assets\Scripts\Controllers\ScoreController.cs" Line="67" Column="9" />
       <File FileName="Assets\Scripts\Core\GameInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controllers\SpawnController.cs" Line="41" Column="1" />
+      <File FileName="Assets\Scripts\Core\Stage.cs" Line="89" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
+              <Node name="Actors" expanded="True" />
               <Node name="Controllers" expanded="True">
-                <Node name="MusicController.cs" selected="True" />
+                <Node name="ScoreController.cs" selected="True" />
               </Node>
               <Node name="Core" expanded="True" />
             </Node>
@@ -35,9 +39,8 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="G:\Documents\Projects\Surge\Assets\Scripts\Core\Stage.cs" line="90" />
       <Breakpoint file="C:\Users\TylerLaptop\Documents\GitHub\Surge\Assets\Scripts\Core\NotificationCenter.cs" line="95" />
-      <Breakpoint file="G:\Documents\Projects\Surge\Assets\Scripts\Controllers\SpawnController.cs" line="41" />
+      <Breakpoint file="G:\Documents\Projects\Surge\Assets\Scripts\Controllers\ScoreController.cs" line="52" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -44,7 +44,7 @@ namespace Surge.Controllers
 
         public void ResetMultipier()
         {
-            m_Multiplier = 0;
+            m_Multiplier = 1;
         }
 
         public void IncreaseScore(int amt)
@@ -62,6 +62,7 @@ namespace Surge.Controllers
         void onGameStart()
         {
             ResetScore();
+            ResetMultipier();
         }
         
         void onGameEnd()

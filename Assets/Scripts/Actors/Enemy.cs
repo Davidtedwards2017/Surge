@@ -1,4 +1,5 @@
-﻿using Surge.Core;
+﻿using UnityEngine;
+using Surge.Core;
 
 namespace Surge.Actors
 {
@@ -6,8 +7,9 @@ namespace Surge.Actors
 
         int PointAwardAmt;	
         
-        protected override void Explode()
+        protected void AwardPoints()
         {
+            Debug.Log("[Enemy]" + name +" Exploded, awarding " +PointRewardAmt+ " points");
             GameInfo.ScoreCtrl.IncreaseScore(PointRewardAmt);
         }
     }

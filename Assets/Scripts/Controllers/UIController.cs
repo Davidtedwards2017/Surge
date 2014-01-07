@@ -148,7 +148,10 @@ namespace Surge.Controllers
 		}
 		private void UpdateScore()
 		{
-			GUI.Label (new Rect (10, 10, 150, 50), "Score");
+            GUI.BeginGroup(new Rect(10,10,150, 30));
+			GUI.Label (new Rect (0, 0, 100, 30), "Score");
+            GUI.Label (new Rect (50, 0, 50, 30), GameInfo.ScoreCtrl.Score.ToString());
+            GUI.EndGroup();
 		}
 		private void UpdateStartScreen()
 		{

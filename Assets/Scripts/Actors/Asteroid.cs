@@ -24,7 +24,7 @@ namespace Surge.Actors
     	
     	protected override void Explode()
     	{
-    		//NotificationCenter.DefaultCenter.PostNotification(this, "onEnemyDestroyed");
+            AwardPoints();
     		rigidbody.detectCollisions = false;
     		SpawnChunks();
     		Destroy(gameObject);
@@ -38,13 +38,10 @@ namespace Surge.Actors
     		for( int k = 0; k < 4; k ++)
     		{
     			Transform t = Instantiate(AsteroidChunkPrefab, AsteroidChunkSockets[k].position, Quaternion.identity) as Transform;
-    			//Asteroid_Chunk chunk = t.gameObject.AddComponent<Asteroid_Chunk>();
     			Asteroid_Chunk chunk = t.gameObject.GetComponent<Asteroid_Chunk>() as Asteroid_Chunk;
 
     			var direction = (t.position - transform.position).normalized;
     			chunk.velocity = direction * AsteroidChunkSpawnSpeed;
-
-    			//chunk.AddForce(force);
     		}
     	}
 
