@@ -29,17 +29,14 @@ namespace Surge.Controllers
 		
 		//private members
 		private float m_BaseCameraDistance;
-        //private PlayerController PlayerCtrl;
 		private float m_CurrentCameraDistance;
 		private bool m_bFollowPlayer;
         private Rigidbody m_FocusRigidbody;
- 		// Use this for initialization
-		void Start () {
-			//TODO: subscribe to player death and spawn messages messages
-           
+ 		
+        // Use this for initialization
+		void Start () {        
             GameInfo.PlayerCtrl.PlayerSpawnedEvent += onPlayerSpawned;
             GameInfo.PlayerCtrl.PlayerDeathEvent += onPlayerDeath;
-			//if(findPlayerToAttachTo()) m_bFollowPlayer = true;
 		}
        
 		// Update is called once per frame
@@ -63,11 +60,7 @@ namespace Surge.Controllers
 		void ResetPosition()
 		{
 		}
-			
 
-
-
-		
 		Vector3 GetCameraFocus()
 		{
 			Vector3 center;

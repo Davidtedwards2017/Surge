@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Surge.Core;
+using Surge.Core.Debug;
 
 namespace Surge.Controllers
 {
@@ -8,11 +9,25 @@ namespace Surge.Controllers
 
         //private members
         private InputController m_InputCtrl;
+        private DebugGui m_DebugGui;
 
 		//public members
 		public bool bDisplayScore;
 		public bool bDisplayEndScreen;
 		public bool bDisplayStartScreen;
+        public bool bDebugOverlay;
+/*
+        public DebugGui DebugGui
+        { 
+            get 
+            { 
+                if(m_DebugGui== null)
+                    m_DebugGui = new DebugGui();
+
+                return m_DebugGui;
+            }
+        }
+*/
         public InputController InputCtrl
         {  
             get
@@ -36,6 +51,7 @@ namespace Surge.Controllers
 
 		void OnGUI () 
         {
+            //update Gui objects
 			if (bDisplayStartScreen) 
 			{
 				UpdateStartScreen();
@@ -52,6 +68,10 @@ namespace Surge.Controllers
                 if(InputCtrl.GetPress())
                     GameInfo.GameStateCtrl.StartGame();
             }
+
+            //update debug overlay
+            //if(bDebugOverlay)
+                //DebugGui.UpdateSliders();
 
 		}
 

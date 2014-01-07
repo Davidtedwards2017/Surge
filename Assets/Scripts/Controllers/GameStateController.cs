@@ -14,10 +14,14 @@ namespace Surge.Controllers
         //public members
         #region Events declarations
         public delegate void GameStateChangedEventHandler(GameState NewState, GameState OldState);
+        public delegate void GameLoadingEventHandler();
+        public delegate void GameLoadedEventHander();
         public delegate void GameStartEventHandler();
         public delegate void GameEndEventHandler();
 
         public event GameStateChangedEventHandler GameStateChanged;
+        public event GameLoadingEventHandler GameLoadingEvent;
+        public event GameLoadedEventHander GameLoadedEvent;
         public event GameStartEventHandler GameStartEvent;
         public event GameStartEventHandler GameEndEvent;
 
@@ -46,7 +50,16 @@ namespace Surge.Controllers
             if (GameStateChanged != null)
                 GameStateChanged(NewState, OldState);
         }
-
+        void onGameLoading()
+        {
+            if(GameLoadingEvent != null)
+                GameLoadingEvent();
+        }
+        void onGameLoaded()
+        {
+            if(GameLoadedEvent != null)
+                GameLoadedEvent();
+        }
         void onGameStart()
         {
             if(GameStartEvent != null)
@@ -83,9 +96,14 @@ namespace Surge.Controllers
         public void StartLoading()
         {
             CurrentGameState = GameState.LOADING;
-            
+            onGameLoading();
             //TODO loading sequence goes here
-            Invoke ("OpenStartMenu", 1);
+            Invoke ("DoneLoading", 1);
+        }
+        public void DoneLoading()
+        {
+            onGameLoaded();
+            OpenStartMenu();
         }
 
         #region Notifications and event listeners

@@ -8,16 +8,15 @@ namespace Surge.Controllers
 	public class InputController {
 
 		//private members
-		private PlayerController m_PlayerController;
 		private Vector3 m_MouseScreenLocation;
+        private Plane plane = new Plane(Vector3.up, Vector3.zero);
 		
 		//public members
-		public float DistanceFromCamera;
+        public Vector3 MouseHitWorldLocation;
 		
 		// Use this for initialization
 		public InputController()
 		{
-			DistanceFromCamera = Vector3.Distance(new Vector3(0,1,0), Camera.main.transform.position);
 
         }
 				
@@ -50,20 +49,32 @@ namespace Surge.Controllers
 			}
 		}
 		
-		
-		private Vector3 GetMouseAimDirection()
+        private Vector3 GetMouseAimDirection()
+        {
+            UpdateMouseHitWorldLocation();
+
+            if(GameInfo.PlayerCtrl.PlayerPawn == null)
+                return Vector3.zero;
+
+            return (MouseHitWorldLocation - GameInfo.PlayerCtrl.PlayerPawn.transform.position).normalized;
+        }
+
+		private void UpdateMouseHitWorldLocation()
 		{
-			if (GameInfo.PlayerCtrl.PlayerPawn == null)
-                return new Vector3(0, 0, 0);
-
-            Vector3 playerLocation = GameInfo.PlayerCtrl.PlayerPawn.transform.position;
-
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = GameInfo.CameraCtrl.CurrentCameraYOffset;
-                //Vector3.Distance(playerLocation, Camera.main.transform.position);
-			
-			mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            return (mousePos - playerLocation).normalized;
+               			
+            MouseHitWorldLocation = Camera.main.ScreenToWorldPoint(mousePos);
+
+            /*
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float ent = 100f;
+            if( plane.Raycast(ray, out ent))
+            {
+                var hitpoint = ray.GetPoint(ent);
+                MouseHitWorldLocation = hitpoint;
+            }
+            */
 		}
 		
 		private Vector3 GetMobileTiltAimDirection()

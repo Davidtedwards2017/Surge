@@ -12,8 +12,6 @@ namespace Surge.Controllers
         private bool bCanControl;
         private object m_Locker = new object();
 
-
-
 		//public members
         public GameObject PlayerPrefab;
         public GameObject PlayerGameObject;
@@ -50,8 +48,6 @@ namespace Surge.Controllers
         {
             GameInfo.GameStateCtrl.GameStateChanged += onGameStateChanged;
             bCanControl = false;
-
-            //GameInfo.CameraCtrl.SubscribeToEvents();
 		}
 		
 		void Update () {
@@ -82,13 +78,19 @@ namespace Surge.Controllers
             {
                 SpawnLocation = new Vector3(0,0,0);
                 PlayerGameObject = Instantiate(PlayerPrefab, SpawnLocation, Quaternion.identity) as GameObject;
+
+                if( PlayerGameObject == null)
+                    Debug.LogError("[PlayerController] Failed to spawn PlayerGameObject from prefab");
             }
 
             PlayerPawn = PlayerGameObject.GetComponent<PlayerPawn>() as PlayerPawn;
+
+            if( PlayerPawn == null)
+                Debug.LogError("[PlayerController] Failed to retrieve PlayerPawn script from PlayerGameObject");
+            
             PlayerPawn.PlayerCtrl = this;
             onPlayerSpawned();
         }
-
 
         public void PawnDying()
         {
