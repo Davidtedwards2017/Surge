@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Core;
 
 public class SurgeActor : MonoBehaviour {
 	
@@ -8,6 +9,7 @@ public class SurgeActor : MonoBehaviour {
 	public float Health;
 	public Vector3 velocity;
     public Rigidbody RB;
+    public int PointRewardAmt;
 
 	//private members
 	protected float m_Speed;
@@ -62,6 +64,7 @@ public class SurgeActor : MonoBehaviour {
 
 	protected virtual void Explode()
 	{
+
 	}
 
 

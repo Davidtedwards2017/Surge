@@ -15,6 +15,7 @@ namespace Surge.Core
         private static CameraController m_CameraCtrl;
         private static MusicController m_MusicCtrl;
         private static GameObject m_PlayerGameObject;
+        private static ScoreController m_ScoreCtrl;
 
 		//public members
 		public static Platform CurrentPlatform;
@@ -68,7 +69,16 @@ namespace Surge.Core
                 return m_MusicCtrl;  
             }
         }
+        public static ScoreController ScoreCtrl
+        {
+            get
+            {
+                if( m_ScoreCtrl == null)
+                    m_ScoreCtrl = GameObject.FindGameObjectWithTag("Controllers").GetComponent<ScoreController>();
 
+                return m_ScoreCtrl;
+            }
+        }
 
 		// Use this for initialization
 		void Start () {
