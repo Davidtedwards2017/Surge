@@ -5,26 +5,38 @@ namespace Surge.Weapons
 {
     public class LaserGun : Gun 
     {
-        private LineRenderer m_LaserEffect;
         //private bool b
 
+        public Transform LaserPrefab;
         public float EffectDuration;
         public float Range;
 
         void Awake()
         {
-            m_LaserEffect = transform.FindChild("Laser Effect").GetComponent<LineRenderer>();
+
         }
 
-        void Update()
-        {
-            m_LaserEffect.SetPosition(0, GunSocket.transform.position);
-            m_LaserEffect.SetPosition(1, (transform.forward).normalized * Range);
-        }
-
-        public override void Shoot()
+        void LateUpdate()
         {
 
+            //m_LaserEffect.SetPosition(0, GunSocket.transform.position);
+            //m_LaserEffect.SetPosition(1, (GunSocket.transform.forward * Range) + GunSocket.transform.position);
         }
+
+        protected override void SpawnProjectile()
+        {
+            if( LaserPrefab == null)
+            {
+                Debug.LogWarning("[LaserGun] LaserPrefab is not set");
+                return;
+            }
+
+            Transform t = Instantiate(LaserPrefab, GunSocket.position, GunSocket.rotation) as Transform;
+            SurgeProjectile projectile = t.GetComponent<SurgeProjectile>() as SurgeProjectile;
+            projectile.Source = this.gameObject;
+            projectile.StartProjectile(transform.forward);
+
+        }
+
     }
 }

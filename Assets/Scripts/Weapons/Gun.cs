@@ -7,9 +7,13 @@ namespace Surge.Weapons
 
     public class Gun : MonoBehaviour {
 
-    	//private members
+        private float m_FireCooldown;
+
     	protected bool m_bActive;
         protected Transform GunSocket;
+
+
+        public float FireCooldownTime = 0.15f;
     	
     	// Use this for initialization
     	void Start () {
@@ -21,9 +25,23 @@ namespace Surge.Weapons
     		onGameStart ();
     	}
     	
-    	public virtual void Shoot()
-    	{
-    	}
+        void Update () {
+            if( m_FireCooldown > 0.0f)
+                m_FireCooldown -= Time.deltaTime;
+        }
+
+        public virtual void Shoot()
+        {
+            if( m_FireCooldown > 0.0f)
+                return;
+            
+            SpawnProjectile();
+            m_FireCooldown = FireCooldownTime;
+        }
+
+        protected virtual void SpawnProjectile()
+        {
+        }
 
         #region Notifications and Event listeners
 

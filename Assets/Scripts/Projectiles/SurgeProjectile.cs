@@ -32,7 +32,7 @@ public class SurgeProjectile : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		transform.position += velocity * Time.deltaTime;
+		//transform.position += velocity * Time.deltaTime;
 		
 		if( (LifeTime -= Time.deltaTime) <= 0)
 			Destroy(gameObject);

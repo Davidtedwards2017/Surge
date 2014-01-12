@@ -13,7 +13,7 @@ namespace Surge.Projectiles
         private LineRenderer LaserEffect;
 
 
-        public float MaxDistance;
+        public float Range;
 
         void Awake()
         {
@@ -33,23 +33,24 @@ namespace Surge.Projectiles
 
             RaycastHit hit;
             Vector3 EndPoint;
+
             //Vector3 direction = transform.forward;
 
-//            if(GetClosestHitTarget(direction ,out hit)) //something was hit
-//            {
-//                GameObject hitObject = hit.transform.gameObject;
-//                EndPoint = hit.point;
-//
-//                if(hitObject.tag.Equals("Enemy"))
-//                {
-//                    SurgeActor HitActorScript = hitObject.GetComponent<SurgeActor>();
-//                    HitActorScript.TakeDamage(DamageAmount);
-//                }
-//            }
-//            else
-//            {
-                EndPoint = direction * MaxDistance;
-            //}
+            if(GetClosestHitTarget(direction ,out hit)) //something was hit
+            {
+                GameObject hitObject = hit.transform.gameObject;
+                EndPoint = hit.point;
+
+                if(hitObject.tag.Equals("Enemy"))
+                {
+                    SurgeActor HitActorScript = hitObject.GetComponent<SurgeActor>();
+                    HitActorScript.TakeDamage(DamageAmount);
+                }
+            }
+            else
+            {
+                EndPoint = (direction * Range) + transform.position;
+            }
 
             //start laser effect
             LaserEffect.SetPosition(0,transform.position);
@@ -65,7 +66,7 @@ namespace Surge.Projectiles
             ClosestHit = new RaycastHit();
 
             RaycastHit[] hits;
-            hits = Physics.RaycastAll(transform.position, dir, MaxDistance);
+            hits = Physics.RaycastAll(transform.position, dir, Range);
 
             foreach( RaycastHit hit in hits)
             {

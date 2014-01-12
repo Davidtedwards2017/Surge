@@ -41,7 +41,7 @@ namespace Surge.Controllers
 		}
        
 		// Update is called once per frame
-		void Update () {
+		void LateUpdate () {
 
 			if (m_bFollowPlayer)
 				camera.transform.position = GetCameraFocus();
