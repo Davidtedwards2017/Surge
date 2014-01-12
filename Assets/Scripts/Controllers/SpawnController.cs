@@ -16,6 +16,7 @@ namespace Surge.Controllers
 		public float TimeBetweenSpawns;
         public float MinSpawnDistance;
         public int NumberOfSpawnPlacementAttempts;
+        public bool bSpawningEnabled;
 
 		//private members
 		private float m_timeTillNextSpawn;
@@ -52,6 +53,9 @@ namespace Surge.Controllers
 
 		public void AddToQueue(SpawnType type)
 		{
+            if(!bSpawningEnabled)
+                return;
+
 			SpawnQueue.Add(GetPrefabFromSpawnType(type));
 		}
 

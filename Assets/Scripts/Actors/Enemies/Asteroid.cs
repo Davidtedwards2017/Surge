@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Surge.Actors
+namespace Surge.Actors.Enemies
 {
     public class Asteroid : Enemy {
 
@@ -14,10 +14,10 @@ namespace Surge.Actors
 
     	protected override void Initalize()
     	{
-    		//Vector3 initForce;
-    		//initForce = new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f));
 
-    		velocity = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * Random.Range(minSpawnSpeed, maxSpawnSpeed);
+            Vector3 velocity = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized* Random.Range(minSpawnSpeed, maxSpawnSpeed);
+
+    		SetVelocity(velocity);
     		//initForce *= 1000* RB.mass;
     		//this.AddForce(initForce);
     	}
@@ -33,15 +33,13 @@ namespace Surge.Actors
     	 
     	private void SpawnChunks()
     	{
-    		Vector3 chunkVelocity;
-
-    		for( int k = 0; k < 4; k ++)
+    	    for( int k = 0; k < 4; k ++)
     		{
     			Transform t = Instantiate(AsteroidChunkPrefab, AsteroidChunkSockets[k].position, Quaternion.identity) as Transform;
     			Asteroid_Chunk chunk = t.gameObject.GetComponent<Asteroid_Chunk>() as Asteroid_Chunk;
 
     			var direction = (t.position - transform.position).normalized;
-    			chunk.velocity = direction * AsteroidChunkSpawnSpeed;
+                chunk.SetVelocity(direction * AsteroidChunkSpawnSpeed);
     		}
     	}
 

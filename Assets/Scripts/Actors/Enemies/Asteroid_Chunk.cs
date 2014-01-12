@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Surge.Actors
+namespace Surge.Actors.Enemies
 {
     public class Asteroid_Chunk : Asteroid {
 

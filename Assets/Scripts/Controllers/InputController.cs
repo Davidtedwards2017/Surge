@@ -9,7 +9,6 @@ namespace Surge.Controllers
 
 		//private members
 		private Vector3 m_MouseScreenLocation;
-        private Plane plane = new Plane(Vector3.up, Vector3.zero);
 		
 		//public members
         public Vector3 MouseHitWorldLocation;

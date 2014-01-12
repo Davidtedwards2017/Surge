@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Surge.Core;
 
-namespace Surge.Actors
+namespace Surge.Actors.Enemies
 {
     public class Enemy : SurgeActor {
 

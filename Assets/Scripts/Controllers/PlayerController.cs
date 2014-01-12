@@ -10,21 +10,20 @@ namespace Surge.Controllers
 
         //private members
         private bool bCanControl;
-        private object m_Locker = new object();
+        private GameObject m_PlayerGameObject;
 
 		//public members
         public GameObject PlayerPrefab;
-        public GameObject PlayerGameObject;
         public PlayerPawn PlayerPawn;
 
-        public Vector3 PawnLocation
+        public GameObject PlayerGameObject
         {
             get
             {
-                if(PlayerGameObject)
-                    return PlayerGameObject.transform.position;
+                if(m_PlayerGameObject == null)
+                    m_PlayerGameObject = GameObject.FindGameObjectWithTag("Player");
 
-                return new Vector3(0,0,0);
+                return m_PlayerGameObject;
             }
         }
 
@@ -72,12 +71,11 @@ namespace Surge.Controllers
         public void SpawnPlayerPawn()
         {
             Vector3 SpawnLocation;
-            PlayerGameObject = GameObject.FindGameObjectWithTag("Player");
-            
+                        
             if( PlayerGameObject == null)
             {
                 SpawnLocation = new Vector3(0,0,0);
-                PlayerGameObject = Instantiate(PlayerPrefab, SpawnLocation, Quaternion.identity) as GameObject;
+                Instantiate(PlayerPrefab, SpawnLocation, Quaternion.identity);
 
                 if( PlayerGameObject == null)
                     Debug.LogError("[PlayerController] Failed to spawn PlayerGameObject from prefab");
@@ -103,7 +101,7 @@ namespace Surge.Controllers
             onPlayerDeath();
             Destroy(PlayerGameObject);
             PlayerPawn = null;
-            PlayerGameObject = null;
+            m_PlayerGameObject = null;
 
         }
 

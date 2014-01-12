@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Surge.Controllers;
+using Surge.Core.Android;
 
 namespace Surge.Core
 {
@@ -79,8 +80,10 @@ namespace Surge.Core
                 return m_ScoreCtrl;
             }
         }
+        public static GameObject Player
+        { get { return PlayerCtrl.PlayerGameObject; }}
 
-		// Use this for initialization
+        // Use this for initialization
 		void Start () {
             GameStateCtrl.GameStateChanged += onGameStateChanged;
 			InitiateForCurrentDevice();
@@ -101,17 +104,25 @@ namespace Surge.Core
             switch (Application.platform)
             {
             case RuntimePlatform.Android:
+                    AndroidInitalization();
+                return;
             case RuntimePlatform.IPhonePlayer:
                 CurrentPlatform = Platform.MOBILE;
-                break;
+                return;
             case RuntimePlatform.WindowsPlayer:
             case RuntimePlatform.WindowsEditor:
             case RuntimePlatform.WindowsWebPlayer:
                 CurrentPlatform = Platform.COMPUTER;
-                break;
+                return;
             default:
-                break;
+                return;
             }
+        }
+
+        private void AndroidInitalization()
+        {
+            CurrentPlatform = Platform.MOBILE;
+            gameObject.AddComponent<AndroidInfo>();
         }
 
         private void onGameStateChanged(GameState newState, GameState oldState)

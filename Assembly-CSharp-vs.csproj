@@ -46,10 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Actors\Asteroid.cs" />
-     <Compile Include="Assets\Scripts\Actors\Asteroid_Chunk.cs" />
-     <Compile Include="Assets\Scripts\Actors\Enemy.cs" />
-     <Compile Include="Assets\Scripts\Actors\Gun.cs" />
+     <Compile Include="Assets\Scripts\Actors\Enemies\Asteroid.cs" />
+     <Compile Include="Assets\Scripts\Actors\Enemies\Asteroid_Chunk.cs" />
+     <Compile Include="Assets\Scripts\Actors\Enemies\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Actors\Enemies\Seeker.cs" />
      <Compile Include="Assets\Scripts\Actors\PlayerPawn.cs" />
      <Compile Include="Assets\Scripts\Actors\SurgeActor.cs" />
      <Compile Include="Assets\Scripts\Actors\Wall.cs" />
@@ -61,13 +61,19 @@
      <Compile Include="Assets\Scripts\Controllers\ScoreController.cs" />
      <Compile Include="Assets\Scripts\Controllers\SpawnController.cs" />
      <Compile Include="Assets\Scripts\Controllers\UIController.cs" />
+     <Compile Include="Assets\Scripts\Core\Android\AndroidInfo.cs" />
      <Compile Include="Assets\Scripts\Core\Debug\DebugGui.cs" />
+     <Compile Include="Assets\Scripts\Core\Debug\Direction.cs" />
      <Compile Include="Assets\Scripts\Core\Debug\PlayerDebugGui.cs" />
      <Compile Include="Assets\Scripts\Core\GameInfo.cs" />
      <Compile Include="Assets\Scripts\Core\NotificationCenter.cs" />
      <Compile Include="Assets\Scripts\Core\NotificationSubscriberBase.cs" />
      <Compile Include="Assets\Scripts\Core\Stage.cs" />
+     <Compile Include="Assets\Scripts\Projectiles\SurgeLaser.cs" />
      <Compile Include="Assets\Scripts\Projectiles\SurgeProjectile.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Gun.cs" />
+     <Compile Include="Assets\Scripts\Weapons\LaserGun.cs" />
+     <Compile Include="Assets\Scripts\Weapons\MachineGun.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />

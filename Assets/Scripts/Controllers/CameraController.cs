@@ -32,6 +32,7 @@ namespace Surge.Controllers
 		private float m_CurrentCameraDistance;
 		private bool m_bFollowPlayer;
         private Rigidbody m_FocusRigidbody;
+        private Vector3 m_lastKnownFocusLocation;
  		
         // Use this for initialization
 		void Start () {        
@@ -65,7 +66,7 @@ namespace Surge.Controllers
 		{
 			Vector3 center;
 
-			center = Focus.transform.position + GetVelocityOffset();
+            center = GetFocusLocation() + GetVelocityOffset();
             center.y = CurrentCameraYOffset;
 
 			if((center.z + EdgeDistance) >= Stage.North.transform.position.z)
@@ -91,6 +92,9 @@ namespace Surge.Controllers
 		
 		Vector3 GetVelocityOffset()
 		{
+            if( FocusRigidbody == null)
+                return new Vector3(0,0,0);
+
 			Vector3 VelocityOffset = VelocityOffsetScale * FocusRigidbody.velocity;
 			
 			if(VelocityOffset.magnitude > MaxOffset)
@@ -98,6 +102,14 @@ namespace Surge.Controllers
 			
 			return VelocityOffset;
 		}
+
+        Vector3 GetFocusLocation()
+        {
+            if( Focus != null)
+                 m_lastKnownFocusLocation = Focus.transform.position;
+
+            return m_lastKnownFocusLocation;
+        }
 
         #region Events and Notifications
 

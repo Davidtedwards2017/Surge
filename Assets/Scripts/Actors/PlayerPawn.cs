@@ -42,13 +42,14 @@ namespace Surge.Actors
 
         public void RotatePawn(Vector3 Direction)
         {
+            Direction.y = 0;
             transform.rotation = Quaternion.Lerp(
                 gameObject.transform.rotation, Quaternion.LookRotation(Direction), Time.deltaTime * TurningRate);
         }
 
         #region Events and Notifications
 
-        protected override void OnTriggerEnter(Collider collider)
+        protected virtual void OnTriggerEnter(Collider collider)
         {
            
         }
