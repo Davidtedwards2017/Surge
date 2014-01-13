@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Surge.Actors;
 
 namespace Surge.Projectiles
 {
@@ -49,7 +50,7 @@ namespace Surge.Projectiles
             }
             else
             {
-                EndPoint = (direction * Range) + transform.position;
+                EndPoint = (direction * Range + transform.position);
             }
 
             //start laser effect
@@ -63,6 +64,7 @@ namespace Surge.Projectiles
         {
             float ShortestSoFar = Mathf.Infinity;
             bool bFoundHit = false;
+            float distance;
             ClosestHit = new RaycastHit();
 
             RaycastHit[] hits;
@@ -70,8 +72,10 @@ namespace Surge.Projectiles
 
             foreach( RaycastHit hit in hits)
             {
-                if(Vector3.Distance(transform.position, hit.point) < ShortestSoFar)
+                distance = Vector3.Distance(transform.position, hit.point);
+                if(distance < ShortestSoFar)
                 {
+                    ShortestSoFar = distance;
                     ClosestHit = hit;
                     bFoundHit = true;
                 }

@@ -12,5 +12,13 @@ namespace Surge.Actors.Enemies
             Debug.Log("[Enemy]" + name +" Exploded, awarding " +PointRewardAmt+ " points");
             GameInfo.ScoreCtrl.IncreaseScore(PointRewardAmt);
         }
+
+        protected override void Explode()
+        {
+            AwardPoints();
+            NotificationCenter.DefaultCenter.PostNotification(this, "onEnemyDestroyed");
+            rigidbody.detectCollisions = false;
+            Destroy(gameObject);
+        }
     }
 }

@@ -15,19 +15,7 @@ namespace Surge.Controllers
 		public bool bDisplayScore;
 		public bool bDisplayEndScreen;
 		public bool bDisplayStartScreen;
-        public bool bDebugOverlay;
-/*
-        public DebugGui DebugGui
-        { 
-            get 
-            { 
-                if(m_DebugGui== null)
-                    m_DebugGui = new DebugGui();
 
-                return m_DebugGui;
-            }
-        }
-*/
         public InputController InputCtrl
         {  
             get

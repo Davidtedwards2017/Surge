@@ -48,7 +48,7 @@ namespace Surge.Core.Debug
             {
                 if(!bPlayerDragSet)
                 {
-                    m_Player_Mass = GameInfo.PlayerCtrl.PlayerPawn.RB.drag;
+                    m_Player_Drag = GameInfo.PlayerCtrl.PlayerPawn.RB.drag;
                     bPlayerDragSet = true;
                 }
                 return m_Player_Drag;
@@ -112,15 +112,19 @@ namespace Surge.Core.Debug
             GUI.Label(new Rect(0,0, DebugVarables.GROUP_WIDTH, DebugVarables.LINE_HEIGHT),"Player Controls");
 
             //sliders
-            m_Player_Mass = DebugGui.CreateSliderRow(1, "Mass", Player_Mass, 0.1f, 10);
-            Player.RB.drag = DebugGui.CreateSliderRow(2, "Drag", Player.RB.drag, 0, 10);
-            Player.TurningRate = DebugGui.CreateSliderRow(3, "TurningRate", Player.TurningRate, 0, 20);
-            Player.MaxSpeed = DebugGui.CreateSliderRow(4, "MaxSpeed", Player.MaxSpeed, 0, 50);
-            Player.ThrustAmt = DebugGui.CreateSliderRow(5, "ThrustAmt", Player.ThrustAmt, 0, 500);
+            Player.RB.mass = m_Player_Mass = DebugGui.CreateSliderRow(1, "Mass", Player_Mass, 0.1f, 10);
+            Player.RB.drag = m_Player_Drag = DebugGui.CreateSliderRow(2, "Drag", Player_Drag, 0, 10);
+            Player.TurningRate = m_Player_TurningRate = DebugGui.CreateSliderRow(3, "TurningRate", Player_TurningRate, 0, 20);
+            Player.MaxSpeed = m_Player_MaxSpeed = DebugGui.CreateSliderRow(4, "MaxSpeed", Player_MaxSpeed, 0, 50);
+            Player.ThrustAmt = m_Player_ThrustAmt = DebugGui.CreateSliderRow(5, "ThrustAmt", Player_ThrustAmt, 0, 500);
             
             GUI.EndGroup();
             
-            Player.RB.mass = m_Player_Mass;
+//            Player.RB.mass = m_Player_Mass;
+//             Player.RB.drag = m_Player_Drag;
+//            Player.TurningRate = m_Player_TurningRate;
+//            Player.MaxSpeed = m_Player_MaxSpeed;
+//            Player.ThrustAmt = m_Player_ThrustAmt;
         }
 
     }

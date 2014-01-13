@@ -9,10 +9,13 @@ namespace Surge.Controllers
 
 		public enum SpawnType
 		{
-			Asteroid
+			Asteroid,
+            Seeker
 		}
 		//public members
 		public Transform AsteroidPrefab;
+        public Transform SeekerPrefab;
+
 		public float TimeBetweenSpawns;
         public float MinSpawnDistance;
         public int NumberOfSpawnPlacementAttempts;
@@ -51,6 +54,11 @@ namespace Surge.Controllers
 			AddToQueue(SpawnType.Asteroid);
 		}
 
+        public void AddSeekerToQueue()
+        {
+            AddToQueue(SpawnType.Seeker);
+        }
+
 		public void AddToQueue(SpawnType type)
 		{
             if(!bSpawningEnabled)
@@ -77,19 +85,27 @@ namespace Surge.Controllers
 
 		private void Spawn(Transform SpawnPrefab, Vector3 location)
 		{
+            if (SpawnPrefab == null)
+            {
+                Debug.LogWarning("[SpawnController] Spawn prefab(s) not set");
+                return;
+            }
+
 			Instantiate(SpawnPrefab, location, Quaternion.identity);
 		}
 
 		private Transform GetPrefabFromSpawnType(SpawnType type)
 		{
+
 			switch(type)
 			{
 			case SpawnType.Asteroid:
 				return AsteroidPrefab;
+            case SpawnType.Seeker:
+                return SeekerPrefab;
 			default:
 				return null;
 			}
-
 		}
 
         private bool GetValidSpawnLocation(out Vector3 SpawnLocation)
@@ -129,10 +145,12 @@ namespace Surge.Controllers
         public void StartSpawning()
         {
             InvokeRepeating("AddAsteroidToQueue", 4, TimeBetweenSpawns);
+            InvokeRepeating("AddSeekerToQueue", 2, TimeBetweenSpawns * 2);
         }
         public void StopSpawning()
         {
             CancelInvoke("AddAsteroidToQueue");
+            CancelInvoke("AddSeekerToQueue");
         }
 
         #region Notifications and Event listeners
