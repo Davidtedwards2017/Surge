@@ -20,7 +20,12 @@ namespace Surge.Controllers
             get
             {
                 if(m_FocusRigidbody == null)
+                {
+                    if(Focus == null)
+                        return null;
+
                     m_FocusRigidbody = Focus.GetComponent<Rigidbody>();
+                }
                 
                 return m_FocusRigidbody;
             }

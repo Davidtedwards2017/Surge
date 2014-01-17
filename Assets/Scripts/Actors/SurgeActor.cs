@@ -24,7 +24,7 @@ namespace Surge.Actors
         // Update is called once per frame
     	void Update () {
 
-            UpdateMovement();
+            //UpdateMovement();
     	}
 
         public void SetVelocity(Vector3 vect)

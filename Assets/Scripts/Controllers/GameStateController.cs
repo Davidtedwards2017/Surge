@@ -10,6 +10,10 @@ namespace Surge.Controllers
 
 		//private members
 		private GameState m_CurrentGameState;
+        private bool bTryingToStart;
+        private float m_StartTimeout = 5.0f;
+        private float m_EndGameTimeout = 1.0f;
+        private float m_CurrentTimeout;
 		
         //public members
         #region Events declarations
@@ -75,7 +79,38 @@ namespace Surge.Controllers
 		void Start () {
             GameInfo.PlayerCtrl.PlayerDeathEvent += onPlayerDeath;
             CurrentGameState = GameState.UNINITLAIZED;
+            bTryingToStart = false;
 		}
+
+        void Update()
+        {
+            if(bTryingToStart)
+            {
+                if(GameInfo.PlayerCtrl.ReadyToStartGame())
+                {
+                    StartGame();
+                    bTryingToStart = false;
+                }
+
+                m_CurrentTimeout -= Time.deltaTime;
+
+                if(m_CurrentTimeout <= 0)
+                {
+                    Debug.LogWarning("[GameStateController] Timed out waiting for Controllers");
+                    bTryingToStart = false;
+                }
+            }
+        }
+
+        public void TryToStartGame()
+        {
+            if(GameInfo.PlayerCtrl.SpawnPlayerPawn())
+            {
+                bTryingToStart = true;
+                m_CurrentTimeout = m_StartTimeout;
+            }
+
+        }
 
         public void StartGame()
         {
@@ -111,7 +146,7 @@ namespace Surge.Controllers
         void onPlayerDeath()
         {
             Debug.Log ("[GameInfo] Player death detected");
-            EndGame();
+            Invoke("EndGame", m_EndGameTimeout);
         }
         
         #endregion

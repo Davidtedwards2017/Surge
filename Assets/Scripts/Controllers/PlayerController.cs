@@ -6,7 +6,7 @@ using Surge.Actors;
 namespace Surge.Controllers
 {
 
-	public class PlayerController : MonoBehaviour {
+    public class PlayerController : MonoBehaviour, IController {
 
         //private members
         private bool bCanControl;
@@ -59,6 +59,9 @@ namespace Surge.Controllers
 		
         void GetPlayerInput()
         {
+            if( PlayerPawn == null)
+                return;
+
             Vector3 Direction = GameInfo.InputCtrl.GetAimDirection();
             Direction.y = PlayerPawn.transform.position.y;
 
@@ -68,26 +71,43 @@ namespace Surge.Controllers
                 PlayerPawn.ActivateThrusters();
         }
 		
-        public void SpawnPlayerPawn()
+        public bool SpawnPlayerPawn()
         {
             Vector3 SpawnLocation;
                         
             if( PlayerGameObject == null)
             {
+                Debug.Log("[PlayerController] No PlayerGameObject detected");
+
                 SpawnLocation = new Vector3(0,0,0);
                 Instantiate(PlayerPrefab, SpawnLocation, Quaternion.identity);
 
                 if( PlayerGameObject == null)
+                {
                     Debug.LogError("[PlayerController] Failed to spawn PlayerGameObject from prefab");
+                    return false;
+                }
+
+                Debug.Log("[PlayerController] Successfully spawned PlayerGameObject");
+            }
+            else
+            {
+                Debug.Log("[PlayerController] PlayerGameObject already exists");
             }
 
             PlayerPawn = PlayerGameObject.GetComponent<PlayerPawn>() as PlayerPawn;
 
             if( PlayerPawn == null)
+            {
                 Debug.LogError("[PlayerController] Failed to retrieve PlayerPawn script from PlayerGameObject");
+                return false;
+            }
+
+            Debug.Log("[PlayerController] Successfully retrieved PlayerPawn script");
             
             PlayerPawn.PlayerCtrl = this;
             onPlayerSpawned();
+            return true;
         }
 
         public void PawnDying()
@@ -98,18 +118,31 @@ namespace Surge.Controllers
 
         public void PawnDeath()
         {
-            onPlayerDeath();
+            Debug.Log("[PlayerController] Destroying PlayerGameObject");
             Destroy(PlayerGameObject);
             PlayerPawn = null;
             m_PlayerGameObject = null;
 
+            onPlayerDeath();
+        }
+
+        //return true when 
+        public bool ReadyToStartGame()
+        {
+            if(PlayerPawn == null||
+               PlayerGameObject == null)
+                return false;
+
+            Debug.Log("[PlayerController] PlayerController is Ready to StartGame");
+
+            return true;
         }
 
         #region Notifications and Event listeners
 
         void onGameStateChanged(GameState newState, GameState oldState)
         {
-            Debug.Log("[PlayerController] GameStateChanged from "+ oldState+" to "+newState);
+            Debug.Log("[PlayerController] GameStateChanged from " + oldState + " to " + newState);
             
             if (newState == GameState.PLAYING)
             {
