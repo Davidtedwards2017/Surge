@@ -6,19 +6,30 @@ namespace Surge.Actors
 {
     public class SurgeActor : MonoBehaviour {
     	
+        private Rigidbody m_RigidBody;
+
     	//public members
     	public float MaxSpeed;
     	public float Health;
     	public Vector3 velocity;
         public float mass;
 
-        public Rigidbody RB;
+        public Rigidbody RB
+        {
+            get
+            {
+                if(m_RigidBody == null)
+                    m_RigidBody = GetComponent<Rigidbody>() as Rigidbody;
+
+                return m_RigidBody;
+            }
+        }
         public int PointRewardAmt;
     	public float Speed;
     	
     	// Use this for initialization
     	void Start () {
-            RB = GetComponent<Rigidbody>() as Rigidbody;
+
     		this.Initalize();
     	}
         // Update is called once per frame

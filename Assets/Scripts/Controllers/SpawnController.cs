@@ -145,7 +145,7 @@ namespace Surge.Controllers
         public void StartSpawning()
         {
             InvokeRepeating("AddAsteroidToQueue", 4, TimeBetweenSpawns);
-            InvokeRepeating("AddSeekerToQueue", 2, TimeBetweenSpawns * 2);
+            //InvokeRepeating("AddSeekerToQueue", 2, TimeBetweenSpawns * 2);
         }
         public void StopSpawning()
         {
