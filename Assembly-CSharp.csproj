@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Actors\Wall.cs" />
      <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
      <Compile Include="Assets\Scripts\Controllers\GameStateController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\IController.cs" />
      <Compile Include="Assets\Scripts\Controllers\InputController.cs" />
      <Compile Include="Assets\Scripts\Controllers\MusicController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
@@ -65,15 +66,17 @@
      <Compile Include="Assets\Scripts\Core\Debug\DebugGui.cs" />
      <Compile Include="Assets\Scripts\Core\Debug\Direction.cs" />
      <Compile Include="Assets\Scripts\Core\Debug\PlayerDebugGui.cs" />
+     <Compile Include="Assets\Scripts\Core\DirectionalForceZone.cs" />
+     <Compile Include="Assets\Scripts\Core\DontGoThroughThings.cs" />
+     <Compile Include="Assets\Scripts\Core\ForceExplosion.cs" />
      <Compile Include="Assets\Scripts\Core\GameInfo.cs" />
      <Compile Include="Assets\Scripts\Core\NotificationCenter.cs" />
      <Compile Include="Assets\Scripts\Core\NotificationSubscriberBase.cs" />
      <Compile Include="Assets\Scripts\Core\Stage.cs" />
+     <Compile Include="Assets\Scripts\Projectiles\MachineGunBulletProjectile.cs" />
      <Compile Include="Assets\Scripts\Projectiles\SurgeLaser.cs" />
      <Compile Include="Assets\Scripts\Projectiles\SurgeProjectile.cs" />
      <Compile Include="Assets\Scripts\Weapons\Gun.cs" />
-     <Compile Include="Assets\Scripts\Weapons\LaserGun.cs" />
-     <Compile Include="Assets\Scripts\Weapons\MachineGun.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
