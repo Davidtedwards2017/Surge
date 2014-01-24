@@ -23,6 +23,8 @@ namespace Surge.Core.Debug
         private LineRenderer Line;
         private PlayerDebugGui PlayerDbgGui = new PlayerDebugGui();
 
+        public bool ShowMouseDebugLine;
+
 
         // Use this for initialization
     	void Start () {
@@ -72,7 +74,8 @@ namespace Surge.Core.Debug
 
         void MouseDirectionDebug()
         {
-            if(GameInfo.PlayerCtrl.PlayerPawn == null)
+            if(!ShowMouseDebugLine || 
+               GameInfo.PlayerCtrl.PlayerPawn == null)
                 return;
 
             InputController inputCtrl = GameInfo.InputCtrl;

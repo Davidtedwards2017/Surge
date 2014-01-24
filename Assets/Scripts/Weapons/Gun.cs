@@ -9,8 +9,8 @@ namespace Surge.Weapons
     public class Gun : MonoBehaviour {
 
         //private float m_FireCooldown;
-        private float m_LaserFireCooldown;
-        private float m_MGBFireCooldown;
+        private float m_LaserFireCooldown = 0.0f;
+        private float m_MGBFireCooldown = 0.0f;
 
     	protected bool m_bActive;
         protected Transform GunSocket;
@@ -19,8 +19,8 @@ namespace Surge.Weapons
         public Transform MGBPrefab;
 
         //public float FireCooldownTime = 0.15f;
-        public float MGBFireCooldownTime = 0.15f;
-        public float LaserFireCooldownTime = 0.15f;
+        public float MGBFireCooldownTime = 0.10f;
+        public float LaserFireCooldownTime = 0.25f;
     	
     	// Use this for initialization
     	void Awake () {
@@ -29,15 +29,15 @@ namespace Surge.Weapons
             GameInfo.PlayerCtrl.PlayerDyingEvent += onPlayerDying;
             GameInfo.MusicCtrl.BeatDetectedEvent += onBeatDetected;
             GameInfo.GameStateCtrl.GameStartEvent += onGameStart;
-
     	}
     	
         void Update () {
+
             if( m_LaserFireCooldown > 0.0f)
                 m_LaserFireCooldown -= Time.deltaTime;
 
             if( m_MGBFireCooldown > 0.0f)
-                m_LaserFireCooldown -= Time.deltaTime;
+                m_MGBFireCooldown -= Time.deltaTime;
         }
 
         public virtual void ShootLaser()
@@ -58,6 +58,7 @@ namespace Surge.Weapons
         
         public virtual void ShootMGB()
         {
+           
             if( m_MGBFireCooldown > 0.0f)
                 return;
             
@@ -73,9 +74,9 @@ namespace Surge.Weapons
        
         protected virtual void SpawnProjectile(Transform ProjectilePrefab)
         {
-            if( LaserPrefab == null)
+            if (GunSocket == null)
             {
-                Debug.LogWarning("[LaserGun] LaserPrefab is not set");
+                Debug.LogWarning("[Gun] GunSocket could not be found");
                 return;
             }
             
@@ -95,8 +96,14 @@ namespace Surge.Weapons
 
         protected virtual void onBeatDetected(int subband)
         {
-            if(m_bActive)
+
+            if(!m_bActive)
+                return;
+
+            if( subband < 9)
                 ShootMGB();
+            else
+                ShootLaser();
         }
         protected virtual void onPlayerDying()
         {

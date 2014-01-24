@@ -57,7 +57,7 @@ namespace Surge.Actors.Enemies
 
             Transform Explosion = Instantiate(ExposionPrefab, transform.position, Quaternion.identity) as Transform;
             ForceExplosion explosion = Explosion.gameObject.AddComponent<ForceExplosion>();
-            explosion.ExplosiveForceAmount = 200;
+            explosion.ExplosiveForceAmount = 500;
             explosion.MaxExplosiveRadius = 15;
             explosion.Duration = 0.05f;
             explosion.StartExplosion();

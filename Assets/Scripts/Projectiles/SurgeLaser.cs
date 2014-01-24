@@ -14,23 +14,16 @@ namespace Surge.Projectiles
         private LineRenderer LaserEffect;
 
 
+        public float StartingWidth;
+        //public float CurrentWidth;
         public float Range;
-
-        void Awake()
-        {
-           // transform.parent = transform.Find("GunSocket");
-            LaserEffect = gameObject.GetComponent<LineRenderer>();
-            LaserEffect.SetVertexCount(2);
-        }
-
-        protected override void Initalize()
-        {
-
-        }
-
 
         public override void StartProjectile(Vector3 direction)
         {
+
+            LaserEffect = gameObject.GetComponent<LineRenderer>();
+            LaserEffect.SetWidth(StartingWidth, StartingWidth);
+            LaserEffect.SetVertexCount(2);
 
             RaycastHit hit;
             Vector3 EndPoint;
@@ -72,6 +65,10 @@ namespace Surge.Projectiles
 
             foreach( RaycastHit hit in hits)
             {
+                //ignore other projectiles
+                if(hit.collider.gameObject.tag == "Projectile")
+                    continue;
+
                 distance = Vector3.Distance(transform.position, hit.point);
                 if(distance < ShortestSoFar)
                 {
@@ -83,5 +80,24 @@ namespace Surge.Projectiles
 
             return bFoundHit;
         }
+
+        void LateUpdate()
+        {
+            DecayLaser();
+            UpdateLaser();
+        }
+
+        void DecayLaser()
+        {
+            float newWidth = StartingWidth * (m_RemaingingLifeTime / LifeTime);
+            LaserEffect.SetWidth(newWidth, newWidth);
+        }
+
+        void UpdateLaser()
+        {
+            LaserEffect.SetPosition(0,transform.position);
+        }
+            
+
     }
 }
