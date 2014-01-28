@@ -1,6 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Core\AudioTrackGraph.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Core\AudioTrackGraph.cs" Line="44" Column="58" />
+      <File FileName="Assets\Scripts\Weapons\Gun.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Core\Debug\DebugGui.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controllers\MusicController.cs" Line="29" Column="10" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -9,14 +15,18 @@
               <Node name="Actors" expanded="True">
                 <Node name="Enemies" expanded="True" />
               </Node>
-              <Node name="Controllers" expanded="True">
-                <Node name="PlayerController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="Core" expanded="True">
                 <Node name="Debug" expanded="True" />
+                <Node name="AudioTrackGraph.cs" selected="True" />
               </Node>
               <Node name="Projectiles" expanded="True" />
               <Node name="Weapons" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="Assembly-CSharp-firstpass" expanded="True">
+            <Node name="Vectrosity" expanded="True">
+              <Node name="Documentation" expanded="True" />
             </Node>
           </Node>
         </State>
